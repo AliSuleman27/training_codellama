@@ -272,7 +272,7 @@ def train():
     # Initialize trainer
     trainer = Trainer(
         model=model,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         args=training_args,
         **data_module,
     )
