@@ -86,7 +86,7 @@ class CustomTrainingArguments(HFTrainingArguments):
     """Custom training arguments."""
     output_dir: str = field(default="/workspace/output/codellama-7b-python-adapter")
     optim: str = field(default="adamw_torch")
-    model_max_length: int = field(default=512)
+    model_max_length: int = field(default=1024)
     num_train_epochs: float = field(default=3.0)
     per_device_train_batch_size: int = field(default=4)
     per_device_eval_batch_size: int = field(default=4)
@@ -265,6 +265,9 @@ def train():
     )
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.pad_token_id = tokenizer.eos_token_id
+
+    # Resize embeddings to match tokenizer (CodeLLaMA tokenizer has 32005 tokens)
+    model.resize_token_embeddings(len(tokenizer))
 
     # Get data module
     data_module = get_data_module(tokenizer=tokenizer, training_args=training_args, data_args=data_args)

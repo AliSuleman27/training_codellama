@@ -74,7 +74,7 @@ python3 "${REPO_DIR}/train_adapter.py" \
     --learning_rate 5e-4 \
     --lr_scheduler_type cosine \
     --warmup_ratio 0.03 \
-    --model_max_length 512 \
+    --model_max_length 1024 \
     --fp16 True \
     --logging_steps 50 \
     --evaluation_strategy steps \
