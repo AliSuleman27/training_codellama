@@ -25,7 +25,7 @@ if [ -z "$TMUX" ]; then
 fi
 
 # --- Auto-detect GPU and set batch size ---
-GPU_MEM=$(python3 -c "import torch; print(int(torch.cuda.get_device_properties(0).total_mem / 1e9))" 2>/dev/null || echo "0")
+GPU_MEM=$(python3 -c "import torch; p=torch.cuda.get_device_properties(0); print(int(getattr(p,'total_memory',0) or getattr(p,'total_mem',0)) // (1024**3))" 2>/dev/null || echo "0")
 GPU_NAME=$(python3 -c "import torch; print(torch.cuda.get_device_name(0))" 2>/dev/null || echo "Unknown")
 
 echo "=============================================="
