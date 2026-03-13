@@ -234,7 +234,10 @@ def train():
     )
 
     # Prepare model for LoRA training
-    model = prepare_model_for_kbit_training(model)
+    if model_args.use_8bit_quantization:
+        model = prepare_model_for_kbit_training(model)
+    else:
+        model.enable_input_require_grads()
 
     # Configure LoRA
     lora_config = LoraConfig(
