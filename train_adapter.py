@@ -236,8 +236,6 @@ def train():
     # Prepare model for LoRA training
     if model_args.use_8bit_quantization:
         model = prepare_model_for_kbit_training(model)
-    else:
-        model.enable_input_require_grads()
 
     # Configure LoRA
     lora_config = LoraConfig(
@@ -249,6 +247,10 @@ def train():
         task_type="CAUSAL_LM",
     )
     model = get_peft_model(model, lora_config)
+
+    # Must be after get_peft_model for gradient checkpointing to work
+    if not model_args.use_8bit_quantization:
+        model.enable_input_require_grads()
 
     logger.info("LoRA Configuration:")
     logger.info(f"  r={LORA_R}, alpha={LORA_ALPHA}, dropout={LORA_DROPOUT}")
