@@ -231,6 +231,7 @@ def train():
         device_map=model_args.device_map,
         trust_remote_code=True,
         quantization_config=quantization_config,
+        attn_implementation="flash_attention_2",
     )
 
     # Prepare model for LoRA training
